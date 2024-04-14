@@ -91,3 +91,13 @@ func (r *router) handle(c *Context) {
 		c.String(http.StatusNotFound, "404 NOT FOUND: %s\n", c.Path)
 	}
 }
+
+func (r *router) getRoutes(method string) []*node {
+	root, ok := r.roots[method]
+	if !ok {
+		return nil
+	}
+	nodes := make([]*node, 0)
+	root.travel(&nodes)
+	return nodes
+}
